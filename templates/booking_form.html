@@ -48,4 +48,15 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+
+    const minDateTime = now.toISOString().slice(0, 16);
+
+    document.querySelector('input[name="start_date"]').setAttribute('min', minDateTime);
+    document.querySelector('input[name="end_date"]').setAttribute('min', minDateTime);
+</script>
 {% endblock %}
