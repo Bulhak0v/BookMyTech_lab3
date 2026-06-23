@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <h2 class="mb-4"><i class="bi bi-calendar-check"></i> Мої бронювання</h2>
+
+        {% if bookings %}
+            <div class="card shadow-sm border-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Техніка</th>
+                                <th>Початок</th>
+                                <th>Завершення</th>
+                                <th>Статус</th>
+                                <th>Дія</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for b in bookings %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <strong>{{ b.equipment.name }}</strong>
+                                    </div>
+                                </td>
+                                <td>{{ b.start_date|date:"d.m.Y H:i" }}</td>
+                                <td>{{ b.end_date|date:"d.m.Y H:i" }}</td>
+                                <td>
+                                    {% if b.status == 'confirmed' %}
+                                        <span class="badge bg-success">Підтверджено</span>
+                                    {% elif b.status == 'pending' %}
+                                        <span class="badge bg-warning text-dark">В черзі</span>
+                                    {% elif b.status == 'cancelled' %}
+                                        <span class="badge bg-secondary">Скасовано</span>
+                                    {% else %}
+                                        <span class="badge bg-info">Завершено</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if b.status == 'confirmed' or b.status == 'pending' %}
+                                        <form action="{% url 'cancel_booking' b.id %}" method="post" onsubmit="return confirm('Ви впевнені, що хочете скасувати це бронювання?');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">Скасувати</button>
+                                        </form>
+                                    {% else %}
+                                        <span class="text-muted small">-</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center py-5 bg-white rounded shadow-sm">
+                <i class="bi bi-calendar-x display-1 text-muted"></i>
+                <p class="mt-3 text-muted">У вас ще немає жодного бронювання.</p>
+                <a href="{% url 'equipment_list' %}" class="btn btn-primary rounded-pill px-4">Перейти до каталогу</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
