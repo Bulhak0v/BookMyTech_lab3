@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -35,6 +36,15 @@ class Equipment(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.serial_number})"
+
+    def is_currently_free(self):
+        if self.status == 'repair':
+            return False
+        return not self.bookings.filter(
+            status='confirmed',
+            start_date__lte=timezone.now(),
+            end_date__gte=timezone.now()
+        ).exists()
 
 
 class MaintenanceLog(models.Model):

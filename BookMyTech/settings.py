@@ -160,6 +160,9 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'accounts.User'
+LOGIN_URL = '/api/accounts/login/'
+LOGIN_REDIRECT_URL = '/api/inventory/web/'
+LOGOUT_REDIRECT_URL = '/api/accounts/login/'
 
 AZURE_ACCOUNT_NAME = os.getenv('AZURE_STORAGE_ACCOUNT_NAME')
 AZURE_ACCOUNT_KEY = os.getenv('AZURE_STORAGE_ACCOUNT_KEY')

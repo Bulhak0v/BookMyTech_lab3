@@ -47,7 +47,7 @@
                         <p class="text-muted small mb-2">{{ item.category.name }}</p>
 
                         <p class="card-text">
-                            {% if item.status == 'available' %}
+                            {% if item.is_currently_free %}
                                 <span class="badge bg-success-subtle text-success px-3">Вільний</span>
                             {% elif item.status == 'booked' %}
                                 <span class="badge bg-warning-subtle text-warning px-3">Зайнятий</span>
@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="card-footer bg-transparent border-0 pb-3">
-                        {% if item.status == 'available' %}
+                        {% if item.is_currently_free %}
                             <a href="{% url 'create_booking' item.id %}" class="btn btn-primary w-100 rounded-pill">Забронювати</a>
                         {% else %}
                             <button class="btn btn-secondary w-100 rounded-pill" disabled>Недоступно</button>
