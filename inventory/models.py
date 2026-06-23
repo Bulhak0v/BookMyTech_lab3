@@ -46,6 +46,20 @@ class Equipment(models.Model):
             end_date__gte=timezone.now()
         ).exists()
 
+    @property
+    def current_status(self):
+        if self.status == 'repair':
+            return 'repair'
+
+        now = timezone.now()
+        is_taken = self.bookings.filter(
+            status='confirmed',
+            start_date__lte=now,
+            end_date__gte=now
+        ).exists()
+
+        return 'booked' if is_taken else 'available'
+
 
 class MaintenanceLog(models.Model):
     equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE, related_name='maintenance_logs')

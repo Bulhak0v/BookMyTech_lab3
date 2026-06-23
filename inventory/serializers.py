@@ -12,6 +12,7 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class EquipmentSerializer(serializers.ModelSerializer):
+    status = serializers.ReadOnlyField(source='current_status')
     category_name = serializers.ReadOnlyField(source='category.name')
     location_name = serializers.StringRelatedField(source='location')
 
