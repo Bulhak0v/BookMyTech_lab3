@@ -23,10 +23,9 @@ def create_booking_web(request, item_id):
 
             conflicts = Booking.objects.filter(
                 equipment=equipment,
-                status='confirmed',
                 start_date__lt=booking.end_date,
                 end_date__gt=booking.start_date
-            )
+            ).exclude(status='cancelled')
 
             if conflicts.exists():
                 messages.error(request, "На жаль, на ці дати техніка вже заброньована.")

@@ -20,10 +20,9 @@ class BookingSerializer(serializers.ModelSerializer):
 
         overlapping_bookings = Booking.objects.filter(
             equipment=data['equipment'],
-            status='confirmed',
             start_date__lt=data['end_date'],
             end_date__gt=data['start_date']
-        )
+        ).exclude(status='cancelled')
 
         if overlapping_bookings.exists():
             raise serializers.ValidationError("Ця техніка вже заброньована на обраний період.")
